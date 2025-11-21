@@ -18,7 +18,28 @@
 #include <vector>
 #include <string>
 #include <iostream>
+std::vector<std::string> titulos = {"Ruinas del Nexo",
+        "Bosque Sombrio",
+        "Cueva de Cristal",
+        "Volcan de Lava",
+        "Fuerte Abandonado",
+        "Pantano Venenoso",
+        "El Nexo Final"
+    };
+std::vector<std::string> descripciones = {"Despiertas en el Nexo corrupto. Controles: A/D para moverte. Mucha suerte.",
+        "La luz no entra, es Ideal para ir en silencio.",
+        "Un paisaje hermoso pero los enemigos no tanto.",
+        "No vengas con saco, hace un poco de calor.",
+        "Esto parece viejo, cuidado al pisar",
+        "mucho barro que te vuelve mas lento.",
+        "Esto es tierra de nadie. Espera ¿eres tu?."
+    };
 
+int desordenarHabitaciones() {
+    std::srand(std::time(0));
+    int NumerosAleatorios = std::rand() % 8;
+    return numerosAleatorios;
+}
 
 void combate(Jugador*& jugador, std::vector<Entidad*>& enemigos, bool& flag){
 	int opcion;
@@ -115,9 +136,9 @@ void combate(Jugador*& jugador, std::vector<Entidad*>& enemigos, bool& flag){
 	}
 }
 
-void gameplay(){
+void gameplay(Jugador*& jugador){
 	std::vector<Habitacion*> habitaciones;
-	habitaciones.push_back(new Habitacion("Inicio", "hola"))
+	habitaciones.push_back(new Habitacion(titulos[0], descripciones[0]))
 	std::string direccion;
 	jugador.setHabitacion(habitaciones[0]);
 	std::cout << habitaciones[0].getDescripcion() << std::endl;
@@ -126,14 +147,16 @@ void gameplay(){
 	bool flag = false;
 	while(contHabitaciones < 7 && flag == false){
 		if (direccion == "A" && jugador.getHabitacion().getIzquierda() == NULL){
-			Habitacion* nuevaHabitacion = new Habitacion("Habitacion2", "hola2", NULL, jugador.getHabitacion(), contHabitaciones);
+			int numAl = desordenarHabitaciones();
+			Habitacion* nuevaHabitacion = new Habitacion(titulos[numAl], descripciones[numAl], NULL, jugador.getHabitacion(), contHabitaciones);
 			jugador.getHabitacion().setHIzquierda(nuevaHabitacion);
 			habitaciones.push_back(nuevaHabitacion);
 			jugador.setHabitacion(nuevaHabitacion); 
 			contHabitaciones++;
 		}
 		else if (direccion == "D" && jugador.getHabitacion().getDerecha() == NULL){
-			Habitacion* nuevaHabitacion = new Habitacion("Habitacion2", "hola2", jugador.getHabitacion(), NULL, contHabitaciones);         
+			int numAl = desordenarHabitaciones();
+			Habitacion* nuevaHabitacion = new Habitacion(titulos[numAl], descripciones[numAl], jugador.getHabitacion(), NULL, contHabitaciones);         
 			jugador.getHabitacion().setHDerecha(nuevaHabitacion);
 			habitaciones.push_back(nuevaHabitacion);
 			jugador.setHabitacion(nuevaHabitacion);                                   
@@ -156,7 +179,14 @@ void gameplay(){
 
 
 int main(){
-	gameplay()
-
+	std::string nombre;
+	std::cout << "Bienvenido a Ecos del Nexo" << std::endl;
+	std::cout << "Te encuentras en una dimension fragmentada, donde diferentes monstruos han sido corrompidos" << std::endl;
+	std::cout << "Y tu mision es subir de nivel y eliminarlos con tus habilidades" << std::endl;
+	std::cout << "Escribe tu nombre de heroe: " << std::endl;
+	std::cin >> nombre;
+	Jugador* mc = new Jugador(nombre);
+	gameplay(mc)
+	delete Jugador;
 	return 0;
 }

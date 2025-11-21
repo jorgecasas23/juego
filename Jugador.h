@@ -20,6 +20,7 @@ private:
     std::vector<Objeto> inventario;
     std::string habitacionActual;
 public:
+    Jugador(std::string n);
     Jugador(std::string n, int v, int d, int m);
     ~Jugador();
 

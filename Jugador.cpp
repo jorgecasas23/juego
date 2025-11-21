@@ -6,6 +6,10 @@
 #include <iostream>
 #include <algorithm>
 
+Jugador::Jugador(std::string n){
+    this->nombre = n;
+}
+
 Jugador::Jugador(std::string n, int v, int d, int m)
     : nombre(n), vida(v), danioBase(d),
       mana(m),
