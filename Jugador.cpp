@@ -61,6 +61,14 @@ int Jugador::getMana() const {
     return mana;
 }
 
+int Jugador::getExperiencia() const{
+    return experiencia;
+}
+
+void Jugador::setExperiencia(int experiencia) {
+    this->experiencia = experiencia;
+}
+
 std::string Jugador::getHabitacion() const {
     return habitacionActual;
 }

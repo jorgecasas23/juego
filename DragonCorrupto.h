@@ -6,15 +6,19 @@
 #define JDI_DRAGONCORRUPTO_H
 #include <string>
 #include <algorithm>
+#include "Entidad.h"
 
-class DragonCorrupto {
+class DragonCorrupto : public Entidad{
 private:
     std::string nombre;
     int vida = 500;
     int danioBase = 80;
-    int DanioQuemadura;
+    int DanioQuemadura = 30;
+    int experiencia = 40;
+
 
 public:
+    DragonCorrupto();
     DragonCorrupto(std::string n, int v, int d, int dq);
     ~DragonCorrupto();
 
@@ -24,6 +28,7 @@ public:
     int getDanioBase() const;
     int getVida() const;
     int getDanioQuemadura() const;
+    int getExperiencia() const;
 
     void atacar();
 };

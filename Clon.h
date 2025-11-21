@@ -5,6 +5,7 @@
 #ifndef JDI_CLON_H
 #define JDI_CLON_H
 #include "Jugador.h"
+#include "Entidad.h"
 
 class Clon : public Jugador {
 public:

@@ -6,6 +6,10 @@
 #include <iostream>
 #include <algorithm>
 
+DragonCorrupto::DragonCorrupto(){
+    
+}
+
 DragonCorrupto::DragonCorrupto(std::string n, int v, int d, int dq)
     : nombre(n), vida(v), danioBase(d), DanioQuemadura(dq)
 {}
@@ -24,4 +28,8 @@ void DragonCorrupto::atacar() {
 
 int DragonCorrupto::getDanioQuemadura() const {
     return DanioQuemadura;
+}
+
+int DragonCorrupto::getExperiencia() const{
+    return experiencia;
 }

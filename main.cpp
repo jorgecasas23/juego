@@ -8,13 +8,19 @@
 #include "corazontormenta.h"
 #include "espadarunica.h"
 #include "habitacion.h"
+#include "Jugador.h"
+#include "OrcoSombrio.h"
+#include "DragonCorrupto.h"
+#include "Clon.h"
+#include "Entidad.h"
+#include "Golem"
 
 #include <vector>
 #include <string>
 #include <iostream>
 
 
-void combate(Jugador*& jugador, std::vector<Entidad*>& enemigos){
+void combate(Jugador*& jugador, std::vector<Entidad*>& enemigos, bool& flag){
 	int opcion;
 	while (jugador->EstaVivo() && !enemigos.empty()){
 		std::cout << "Turno de " << jugador->getNombre() << ": " << std::endl;
@@ -57,6 +63,8 @@ void combate(Jugador*& jugador, std::vector<Entidad*>& enemigos){
 
 				if (!enemigos[enemigoAtacar]->EstaVivo()){
 					std::cout << "Has derrotado a " << enemigos[enemigoAtacar]->getNombre() << std::endl;
+					int experienciaRecibida = jugador->experiencia + enemgios[enemigoAtacar]->getExperiencia();
+					jugador->setExperiencia(experienciarecibida);
 					delete enemigos[enemigoAtacar];
 					enemigos.erase(enemigos.begin() + enemigoAtacar);
 				}
@@ -72,6 +80,7 @@ void combate(Jugador*& jugador, std::vector<Entidad*>& enemigos){
 							}
 							if (!jugador->EstaVivo()) {
 	    						std::cout << jugador->getNombre() <<" ha muerto. El combate termina." << std::endl;
+	    						flag = true;
 	    						break;
 	    					}
 						}
@@ -136,14 +145,18 @@ void gameplay(){
 		for (auto* enemigo : jugador.getHabitacion().getEnemigos()){	
 			std::cout << "Te has encontrado con " << enemigo->getNombre() << ". Un " << enemigo->getEspecie() << std::endl;
 		}
-		combate(&jugador, jugador.getHabitacion().getEnemigos());
-		flag = true;
+		combate(&jugador, jugador.getHabitacion().getEnemigos(), flag);
 	}
+	for (auto* habitacion : habitaciones){
+		delete habitacion;
+	}
+	habitaciones.clear();
 }
 
 
 
 int main(){
 	gameplay()
+
 	return 0;
 }

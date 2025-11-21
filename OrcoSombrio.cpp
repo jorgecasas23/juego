@@ -20,3 +20,7 @@ void OrcoSombrio::atacar() {
     int danioTotal = danioBase;
     std::cout << nombre << " Gruk’Thar ataca con fuerza bruta. Danio total: " << danioTotal << " (ignora parte del escudo)." << std::endl;
 }
+
+int OrcoSombrio::getExperiencia() const{
+    return experiencia;
+}

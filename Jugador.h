@@ -6,14 +6,16 @@
 #define JDI_JUGADOR_H
 #include <string>
 #include "Objeto.h"
+#include "Entidad.h"
 #include <vector>
 
-class Jugador {
+class Jugador : public Entidad{
 protected:
     std::string nombre;
     int vida = 500;
     int danioBase = 75;
     int mana = 300;
+    int experiencia = 0;
 private:
     std::vector<Objeto> inventario;
     std::string habitacionActual;
@@ -32,6 +34,8 @@ public:
     void setVida(int nuevaVida);
     int getMana() const;
     void setMana(int nuevoMana);
+    int getExperiencia();
+    void setExperiencia(int experiencia);
     std::string getHabitacion() const;
 };
 

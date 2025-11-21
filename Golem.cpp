@@ -5,6 +5,10 @@
 #include "Golem.h"
 #include <iostream>
 
+Golem::Golem(){
+    
+}
+
 Golem::Golem(std::string n, int v, int d)
     : nombre(n), vida(v), danioBase(d)
 {}
@@ -18,4 +22,8 @@ void Golem::RecibirDanio(int d) {
 
 void Golem::Atacar() {
     std::cout << nombre << " lanza una roca. Danio: " << danioBase;
+}
+
+int Golem::getExperiencia(){
+    return experiencia;
 }
