@@ -9,7 +9,7 @@ private:
 	int manaRestaurado = 150;
 public:
 	PocionMana(std::string nombre);
-	void usarObjeto(Jugador& jugador) const;
+	void usarObjeto(Jugador& Objetivo) const;
 };
 
 #endif
