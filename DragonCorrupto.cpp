@@ -21,3 +21,7 @@ void DragonCorrupto::atacar() {
     std::cout << nombre << " (Zharion) escupe Fuego. Danio: " << danioBase
               << ". Danio de quemadura: " << DanioQuemadura << std::endl;
 }
+
+int DragonCorrupto::getDanioQuemadura() const {
+    return DanioQuemadura;
+}

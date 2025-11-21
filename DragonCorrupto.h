@@ -23,6 +23,7 @@ public:
     std::string getNombre() const;
     int getDanioBase() const;
     int getVida() const;
+    int getDanioQuemadura() const;
 
     void atacar();
 };
