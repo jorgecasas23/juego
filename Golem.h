@@ -4,18 +4,22 @@
 
 #ifndef JDI_GOLEM_H
 #define JDI_GOLEM_H
-#include "Entidad.h"
+#include <string>
 
-class Golem : public Entidad {
+class Golem {
 private:
-    double ProbabilidadAturdir;
-    int TurnoAturdido;
+    std::string nombre;
+    int vida = 400;
+    int danioBase = 65;
 public:
-    Golem(std::string n, int v, int d, double pa, int ta);
-    ~Golem() override;
+    Golem(std::string n, int v, int d);
+    ~Golem();
 
-    void Atacar() override;
+    void Atacar();
+    void RecibirDanio(int d);
+    bool EstaVivo() const;
+    std::string getNombre() const;
+    int getDanioBase() const;
 };
-
 
 #endif //JDI_GOLEM_H

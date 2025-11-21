@@ -4,15 +4,25 @@
 
 #ifndef JDI_DRAGONCORRUPTO_H
 #define JDI_DRAGONCORRUPTO_H
-#include "Entidad.h"
+#include <string>
+#include <algorithm>
 
-class DragonCorrupto : public Entidad {
+class DragonCorrupto {
 private:
+    std::string nombre;
+    int vida = 500;
+    int danioBase = 80;
     int DanioQuemadura;
-    int TurnosQuemadura;
+
 public:
-    DragonCorrupto(std::string n, int v, int d, int dq, int tq);
-    ~DragonCorrupto() override;
+    DragonCorrupto(std::string n, int v, int d, int dq);
+    ~DragonCorrupto();
+
+    void RecibirDanio(int d);
+    bool EstaVivo() const;
+    std::string getNombre() const;
+    int getDanioBase() const;
+    int getVida() const;
 
     void atacar();
 };

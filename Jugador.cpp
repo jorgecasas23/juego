@@ -4,18 +4,23 @@
 
 #include "Jugador.h"
 #include <iostream>
+#include <algorithm>
 
 Jugador::Jugador(std::string n, int v, int d, int m)
-    : Entidad(n, v, d),
+    : nombre(n), vida(v), danioBase(d),
       mana(m),
       habitacionActual("Ruinas del Nexo")
 {
-    inventario.push_back(Objeto("Pocion de Vida", 50));
+}
+Jugador::~Jugador() {}
+
+void Jugador::RecibirDanio(int d) {
+    vida = std::max(0, vida - d);
+    std::cout << nombre << " recibe " << d << " de danio. Vida: " << vida << std::endl;
 }
 
-Jugador::~Jugador() {}
 void Jugador::Atacar() {
-    int costoQ = 10;
+    int costoQ = 20;
     if (mana >= costoQ) {
         mana -= costoQ;
         std::cout << nombre << " Lanza el Proyectil Arcano (Q). Danio moderado: " << danioBase << ". Mana restante: " << mana << std::endl;
@@ -25,7 +30,7 @@ void Jugador::Atacar() {
 }
 
 void Jugador::UsarHabilidadW() {
-    int costoW = 15;
+    int costoW = 30;
     if (mana >= costoW) {
         mana -= costoW;
         std::cout << nombre << " Activa Escudo fragmentado (W), reduciendo danio. Mana restante: " << mana << std::endl;
@@ -35,7 +40,7 @@ void Jugador::UsarHabilidadW() {
 }
 
 void Jugador::UsarHabilidadE() {
-    int costoE = 40;
+    int costoE = 100;
     int danioE = danioBase * 2;
     if (mana >= costoE) {
         mana -= costoE;

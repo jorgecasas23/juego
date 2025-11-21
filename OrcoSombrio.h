@@ -4,14 +4,24 @@
 
 #ifndef JDI_ORCOSOMBRIO_H
 #define JDI_ORCOSOMBRIO_H
-#include "Entidad.h"
+#include <string>
 
-class OrcoSombrio : public Entidad {
+std::string orcosombrio;
+
+class OrcoSombrio {
 private:
-    int Furia;
+    std::string nombre = orcosombrio;
+    int vida =  250;
+    int danioBase 50;
 public:
     OrcoSombrio(std::string n, int v, int d, int f);
-    ~OrcoSombrio() override;
+    ~OrcoSombrio();
+
+    void RecibirDanio(int d);
+    bool EstaVivo() const;
+    std::string getNombre() const;
+    int getDanioBase() const;
+
     void atacar();
 };
 

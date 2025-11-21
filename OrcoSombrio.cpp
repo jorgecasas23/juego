@@ -4,11 +4,19 @@
 
 #include "OrcoSombrio.h"
 #include <iostream>
+#include <algorithm>
 
-OrcoSombrio::OrcoSombrio(std::string n, int v, int d, int f) : Entidad(n, v, d), Furia(f) {}
+OrcoSombrio::OrcoSombrio(std::string n, int v, int d, int f)
+    : nombre(n), vida(v), danioBase(d) {}
+
 OrcoSombrio::~OrcoSombrio() {}
 
+void OrcoSombrio::RecibirDanio(int d) {
+    vida = std::max(0, vida - d);
+    std::cout << nombre << " recibe " << d << " de danio. Vida: " << vida << std::endl;
+}
+
 void OrcoSombrio::atacar() {
-    int danioTotal = danioBase + Furia;
+    int danioTotal = danioBase;
     std::cout << nombre << " Gruk’Thar ataca con fuerza bruta. Danio total: " << danioTotal << " (ignora parte del escudo)." << std::endl;
 }
