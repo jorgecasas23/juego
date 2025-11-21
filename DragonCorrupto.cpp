@@ -26,6 +26,18 @@ void DragonCorrupto::atacar() {
               << ". Danio de quemadura: " << DanioQuemadura << std::endl;
 }
 
+std::string DragonCorrupto::getNombre() const{
+    return nombre;
+}
+
+int DragonCorrupto::getDanioBase() const{
+    return danioBase;
+}
+
+int DragonCorrupto::getVida() const{
+    return vida;
+}
+
 int DragonCorrupto::getDanioQuemadura() const {
     return DanioQuemadura;
 }

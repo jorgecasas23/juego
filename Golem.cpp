@@ -24,6 +24,14 @@ void Golem::Atacar() {
     std::cout << nombre << " lanza una roca. Danio: " << danioBase;
 }
 
+std::string Golem::getNombre(){
+    return nombre;
+}
+
+int Golem::getDanioBase(){
+    return danioBase;
+}
+
 int Golem::getExperiencia(){
     return experiencia;
 }

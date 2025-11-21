@@ -23,7 +23,6 @@ public:
     ~DragonCorrupto();
 
     void RecibirDanio(int d);
-    bool EstaVivo() const;
     std::string getNombre() const;
     int getDanioBase() const;
     int getVida() const;

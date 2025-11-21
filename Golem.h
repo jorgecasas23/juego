@@ -19,7 +19,6 @@ class Golem : public Entidad{
 
         void Atacar();
         void RecibirDanio(int d);
-        bool EstaVivo() const;
         std::string getNombre() const;
         int getDanioBase() const;
         int getExperiencia() const;
