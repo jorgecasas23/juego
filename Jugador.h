@@ -23,11 +23,12 @@ public:
     void UsarHabilidadE();
 
     int getMana() const;
-    std::string getHabitacion() const; // Getter para la habitacion
-    void setHabitacion(std::string nuevaHabitacion);// Setter para la habitacion
+    std::string getHabitacion(); // Getter para la habitacion
+    void setHabitacion(Habitacion* nuevaHabitacion);// Setter para la habitacion
     
 
 };
 
 
 #endif //JDI_JUGADOR_H
+
