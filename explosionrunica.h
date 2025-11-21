@@ -1,16 +1,18 @@
 #ifndef EXPLOSIONRUNICA_H
 #define EXPLOSIONRUNICA_H
+#include "Objeto.h"
 
-class ExplosionRunica : public Object{
-	private:
-		int danio = 160;
-		int gastoMana = 100;
-		std::string letraAsociada = "E";
-	public:
-		ExplosionRunica();
-		void usarObjeto() const override;
-		std::string getLetra();
+class Jugador;
+
+class ExplosionRunica : public Objeto{
+private:
+	int danio = 160;
+	int gastoMana = 100;
+	std::string letraAsociada = "E";
+public:
+	ExplosionRunica(std::string nombre);
+	void usarObjeto(Jugador& jugador) const;
+	std::string getLetra() const;
 };
-
 
 #endif
