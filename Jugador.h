@@ -13,7 +13,7 @@ protected:
     int mana;
 private:
     std::vector<Objeto> inventario;
-    std::string habitacionActual; // Atributo de la habitacion
+    std::string habitacionActual; // Atributo de la habitación
 public:
     Jugador(std::string n, int v, int d, int m);
     ~Jugador() override;
@@ -21,14 +21,12 @@ public:
     void Atacar();
     void UsarHabilidadW();
     void UsarHabilidadE();
-
+    void setVida(int nuevaVida);
     int getMana() const;
-    std::string getHabitacion(); // Getter para la habitacion
-    void setHabitacion(Habitacion* nuevaHabitacion);// Setter para la habitacion
-    
+    void setMana(int nuevoMana);
+
+    std::string getHabitacion() const; // Getter para la habitación
 
 };
 
-
 #endif //JDI_JUGADOR_H
-

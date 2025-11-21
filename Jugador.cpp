@@ -12,6 +12,7 @@ Jugador::Jugador(std::string n, int v, int d, int m)
 {
     inventario.push_back(Objeto("Pocion de Vida", 50));
 }
+
 Jugador::~Jugador() {}
 void Jugador::Atacar() {
     int costoQ = 10;
@@ -22,6 +23,7 @@ void Jugador::Atacar() {
         std::cout << nombre << " No tiene suficiente mana para Proyectil Arcano (Q)." << std::endl;
     }
 }
+
 void Jugador::UsarHabilidadW() {
     int costoW = 15;
     if (mana >= costoW) {
@@ -31,6 +33,7 @@ void Jugador::UsarHabilidadW() {
         std::cout << nombre << " No puede usar el Escudo fragmentado (W)." << std::endl;
     }
 }
+
 void Jugador::UsarHabilidadE() {
     int costoE = 40;
     int danioE = danioBase * 2;
@@ -41,12 +44,18 @@ void Jugador::UsarHabilidadE() {
         std::cout << nombre << " No tiene suficiente mana para Explosion Rúnica (E)." << std::endl;
     }
 }
+void Jugador::setMana(int nuevoMana) {
+    mana = nuevoMana;
+    std::cout << nombre << " Tu mana cambio a: " << mana << std::endl;
+}
+void Jugador::setVida(int nuevaVida) {
+    vida = nuevaVida;
+    std::cout << nombre << "Tu vida cambio a: " << vida << std::endl;
+}
 int Jugador::getMana() const {
     return mana;
 }
-std::string Jugador::getHabitacion() {
+
+std::string Jugador::getHabitacion() const {
     return habitacionActual;
-}
-void Jugador::setHabitacion(Habitacion* nuevaHabitacion) {
-    this->habitacionActual = nuevaHabitacion;
 }
