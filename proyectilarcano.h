@@ -9,7 +9,7 @@ class ProyectilArcano : public Object{
 		std::string letraAsociada = "Q";
 	public:
 		ProyectilArcano();
-		void usarObjeto() const override;
+		void usarObjeto(Jugador& jugador, Entidad& enemigo) const override;
 		int getProteccion();
 		std::string getLetra();
 };
