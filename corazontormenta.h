@@ -1,12 +1,12 @@
 #ifndef CORAZONTORMENTA_H
 #define CORAZONTORMENTA_H
 
-#include "Object.h"
+#include "Objeto.h"
 #include "Jugador.h"
 #include "Entidad.h"
 #include <string>
 
-class CorazonTormenta : public Object {
+class CorazonTormenta : public Objeto {
 private:
 	const int danio = 210;
 	const int gastoMana = 130;
