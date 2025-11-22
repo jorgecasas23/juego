@@ -1,7 +1,8 @@
 #ifndef PROYECTILARCANO_H
 #define PROYECTILARCANO_H
+#include "objeto"
 
-class ProyectilArcano : public Object{
+class ProyectilArcano : public objeto{
 	private:
 		int danio = 75;
 		int gastoMana = 45;
@@ -13,6 +14,7 @@ class ProyectilArcano : public Object{
 		int getProteccion();
 		std::string getLetra();
 };
+
 
 
 #endif
