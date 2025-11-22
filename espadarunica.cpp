@@ -10,14 +10,15 @@ EspadaRunica::EspadaRunica(std::string nombre)
 {
 }
 
-void EspadaRunica::usarObjeto(Jugador& Objetivo) const {
+void EspadaRunica::usarObjeto(Jugador& jugador, Entidad& enemigo) const {
     const int danioExtra = danio;
 
-    int danioTotal = Objetivo.getDanioBase() + danioExtra;
+    int danioTotal = jugador.getDanioBase() + danioExtra;
+    Enemigo.recibirDanio(daniohacer);
 
-    std::cout << "" << Objetivo() << " ataca con " << getNombre() << " (Habilidad "
+    std::cout << "" << jugador() << " ataca con " << getNombre() << " (Habilidad "
               << letraAsignada << ")" << std::endl;
-    std::cout << "Danio infligido: " << danioTotal << " (Base: " << Objetivo.getDanioBase()
+    std::cout << "Danio infligido: " << danioTotal << " (Base: " << jugador.getDanioBase()
               << " + Arma: " << danioExtra << ")." << std::endl;
     std::cout << "El arma proporciona " << proteccion << " puntos extra de defensa." << std::endl;
 }
