@@ -6,42 +6,25 @@
 #include <iostream>
 #include <algorithm>
 
-DragonCorrupto::DragonCorrupto(){
-    
-}
+DragonCorrupto::DragonCorrupto()
+    : Entidad("Zharion", 500, 80) {}
 
 DragonCorrupto::DragonCorrupto(std::string n, int v, int d, int dq)
-    : nombre(n), vida(v), danioBase(d), DanioQuemadura(dq)
-{}
+    : Entidad(n, v, d), DanioQuemadura(dq) {}
 
 DragonCorrupto::~DragonCorrupto() {}
 
-void DragonCorrupto::RecibirDanio(int d) {
-    vida = std::max(0, vida - d);
-    std::cout << nombre << " recibe " << d << " de danio. Vida: " << vida << std::endl;
-}
-
-void DragonCorrupto::atacar() {
-    std::cout << nombre << " (Zharion) escupe Fuego. Danio: " << danioBase
-              << ". Danio de quemadura: " << DanioQuemadura << std::endl;
-}
-
-std::string DragonCorrupto::getNombre() const{
-    return nombre;
-}
-
-int DragonCorrupto::getDanioBase() const{
-    return danioBase;
-}
-
-int DragonCorrupto::getVida() const{
-    return vida;
+void DragonCorrupto::Atacar(Entidad& objetivo) {
+    int danioTotal = danioBase + DanioQuemadura;
+    objetivo.RecibirDanio(danioTotal);
+    std::cout << nombre << " (Zharion) escupe Fuego. Danio: " << danioTotal << " (Base: " << danioBase
+              << " + Quemadura: " << DanioQuemadura << ")" << std::endl;
 }
 
 int DragonCorrupto::getDanioQuemadura() const {
     return DanioQuemadura;
 }
 
-int DragonCorrupto::getExperiencia() const{
+int DragonCorrupto::getExperiencia() const {
     return experiencia;
 }

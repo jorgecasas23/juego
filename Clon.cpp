@@ -4,22 +4,25 @@
 
 #include "Clon.h"
 #include <iostream>
+#include <string>
 
 Clon::Clon(const std::string& nombreClonado, int v, int d, int m)
-    : Jugador("Clon de " + nombreClonado, v, d, m) {
-    danioBase += 20; // Mejora su danio base por ser el boss
-}
+    : Jugador("Clon de " + nombreClonado, v + 100, d + danioExtra, m) {}
+
 Clon::~Clon() {}
-void Clon::atacar() {
-    usarHabilidadE();
+
+void Clon::Atacar(Entidad& objetivo) {
+    usarHabilidadE(objetivo);
 }
-void Clon::usarHabilidadE() {
-    int costoE = 40;
+
+void Clon::usarHabilidadE(Entidad& objetivo) {
     int danioTotal = danioBase * 2;
-    if (mana >= costoE) {
-        mana -= costoE;
+    if (mana >= costoHabilidadE) {
+        mana -= costoHabilidadE;
+        objetivo.RecibirDanio(danioTotal);
         std::cout << nombre << " lanza la Explosion Runica. Danio total: " << danioTotal << ". Mana restante: " << mana << std::endl;
     } else {
-        Jugador::Atacar(); // Si no tiene suficiente maná para E, recurre al ataque base
+        objetivo.RecibirDanio(danioBase);
+        std::cout << nombre << " ataca debilmente. Danio: " << danioBase << std::endl;
     }
 }

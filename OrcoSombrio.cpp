@@ -6,29 +6,20 @@
 #include <iostream>
 #include <algorithm>
 
-OrcoSombrio::OrcoSombrio(std::string n, int v, int d, int f)
-    : nombre(n), vida(v), danioBase(d) {}
+OrcoSombrio::OrcoSombrio()
+    : Entidad("Gruk’Thar", 250, 50) {}
+
+OrcoSombrio::OrcoSombrio(std::string n, int v, int d)
+    : Entidad(n, v, d) {}
 
 OrcoSombrio::~OrcoSombrio() {}
 
-void OrcoSombrio::RecibirDanio(int d) {
-    vida = std::max(0, vida - d);
-    std::cout << nombre << " recibe " << d << " de danio. Vida: " << vida << std::endl;
-}
-
-void OrcoSombrio::atacar() {
+void OrcoSombrio::Atacar(Entidad& objetivo) {
     int danioTotal = danioBase;
-    std::cout << nombre << " Gruk’Thar ataca con fuerza bruta. Danio total: " << danioTotal << " (ignora parte del escudo)." << std::endl;
+    objetivo.RecibirDanio(danioTotal);
+    std::cout << nombre << " ataca con fuerza bruta. Danio total: " << danioTotal << std::endl;
 }
 
-std::string OrcoSombrio::getNombre() const{
-    return nombre;
-}
-
-int OrcoSombrio::getDanioBase() const{
-    return danioBase;
-}
-
-int OrcoSombrio::getExperiencia() const{
+int OrcoSombrio::getExperiencia() const {
     return experiencia;
 }

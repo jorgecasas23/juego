@@ -8,19 +8,15 @@
 #include "Entidad.h"
 
 class OrcoSombrio : public Entidad{
-    private:
-        std::string nombre = orcosombrio;
-        int vida =  250;
-        int danioBase 50;
-    public:
-        OrcoSombrio(std::string n, int v, int d, int f);
-        ~OrcoSombrio();
+private:
+    int experiencia = 10;
+public:
+    OrcoSombrio();
+    OrcoSombrio(std::string n, int v, int d);
+    ~OrcoSombrio() override;
 
-        void RecibirDanio(int d);
-        std::string getNombre() const;
-        int getDanioBase() const;
-        int getExperiencia() const;
-        void atacar();
+    void Atacar(Entidad& objetivo) override;
+    int getExperiencia() const;
 };
 
-#endif //JDI_ORCOSOMBRIO_H
+#endif

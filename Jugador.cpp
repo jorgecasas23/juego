@@ -3,76 +3,91 @@
 //
 
 #include "Jugador.h"
+#include "Habitacion.h"
 #include <iostream>
 #include <algorithm>
 
-Jugador::Jugador(std::string n){
-    this->nombre = n;
-}
+Jugador::Jugador(std::string n)
+    : Entidad(n, 500, 75), mana(300), experiencia(0), habitacionActual(nullptr) {}
 
 Jugador::Jugador(std::string n, int v, int d, int m)
-    : nombre(n), vida(v), danioBase(d),
-      mana(m),
-      habitacionActual("Ruinas del Nexo")
-{
-}
-Jugador::~Jugador() {}
+    : Entidad(n, v, d), mana(m), experiencia(0), habitacionActual(nullptr) {}
 
-void Jugador::RecibirDanio(int d) {
-    vida = std::max(0, vida - d);
-    std::cout << nombre << " recibe " << d << " de danio. Vida: " << vida << std::endl;
-}
-
-void Jugador::Atacar() {
-    int costoQ = 20;
-    if (mana >= costoQ) {
-        mana -= costoQ;
-        std::cout << nombre << " Lanza el Proyectil Arcano (Q). Danio moderado: " << danioBase << ". Mana restante: " << mana << std::endl;
-    } else {
-        std::cout << nombre << " No tiene suficiente mana para Proyectil Arcano (Q)." << std::endl;
+Jugador::~Jugador() {
+    for (Objeto* objeto : inventario) {
+        delete objeto;
     }
+    inventario.clear();
 }
 
-void Jugador::UsarHabilidadW() {
-    int costoW = 30;
-    if (mana >= costoW) {
-        mana -= costoW;
-        std::cout << nombre << " Activa Escudo fragmentado (W), reduciendo danio. Mana restante: " << mana << std::endl;
-    } else {
-        std::cout << nombre << " No puede usar el Escudo fragmentado (W)." << std::endl;
-    }
+void Jugador::Atacar(Entidad& objetivo) {
+    objetivo.RecibirDanio(danioBase);
+    std::cout << nombre << " ataca con golpe base. Danio: " << danioBase << std::endl;
 }
 
-void Jugador::UsarHabilidadE() {
-    int costoE = 100;
-    int danioE = danioBase * 2;
-    if (mana >= costoE) {
-        mana -= costoE;
-        std::cout << nombre << " Lanza la Explosion Rúnica (E). Gran Danio: " << danioE << ". Mana restante: " << mana << std::endl;
-    } else {
-        std::cout << nombre << " No tiene suficiente mana para Explosion Rúnica (E)." << std::endl;
+void Jugador::agregarObjeto(Objeto* objeto) {
+    inventario.push_back(objeto);
+    std::cout << nombre << " obtiene " << objeto->getNombre() << std::endl;
+}
+
+void Jugador::usarObjeto(char letra, Entidad& enemigo) {
+    std::string letraStr(1, letra);
+    for (size_t i = 0; i < inventario.size(); ++i) {
+        const Objeto* obj = inventario[i];
+        if (obj->getNombre().find("(" + letraStr + ")") != std::string::npos ||
+            (obj->getNombre() == "Pocion de Vida" && letra == 'V') ||
+            (obj->getNombre() == "Pocion de Mana" && letra == 'M')) {
+
+            obj->usarObjeto(*this, enemigo);
+
+            // Si es un objeto consumible (pocion), lo eliminamos del inventario
+            if (obj->getNombre().find("Pocion") != std::string::npos) {
+                delete inventario[i];
+                inventario.erase(inventario.begin() + i);
+            }
+            return;
+        }
     }
+    std::cout << "No tienes un objeto/habilidad asignada a la tecla " << letra << "." << std::endl;
 }
-void Jugador::setMana(int nuevoMana) {
-    mana = nuevoMana;
-    std::cout << nombre << " Tu mana cambio a: " << mana << std::endl;
+
+void Jugador::mostrarInventario() const {
+    std::cout << "\n--- Inventario de " << nombre << " ---" << std::endl;
+    if (inventario.empty()) {
+        std::cout << "Inventario vacio." << std::endl;
+        return;
+    }
+    for (const auto& objeto : inventario) {
+        std::cout << "- " << objeto->getNombre() << ": " << objeto->getDescripcion() << std::endl;
+    }
+    std::cout << "---------------------------------\n" << std::endl;
 }
-void Jugador::setVida(int nuevaVida) {
-    vida = nuevaVida;
-    std::cout << nombre << "Tu vida cambio a: " << vida << std::endl;
-}
+
 int Jugador::getMana() const {
     return mana;
 }
 
-int Jugador::getExperiencia() const{
+void Jugador::setMana(int nuevoMana) {
+    mana = nuevoMana;
+    std::cout << nombre << " Tu mana cambio a: " << mana << std::endl;
+}
+
+void Jugador::setVida(int nuevaVida) {
+    vida = nuevaVida;
+}
+
+int Jugador::getExperiencia() const {
     return experiencia;
 }
 
-void Jugador::setExperiencia(int experiencia) {
-    this->experiencia = experiencia;
+void Jugador::setExperiencia(int exp) {
+    experiencia = exp;
 }
 
-std::string Jugador::getHabitacion() const {
+Habitacion* Jugador::getHabitacion() const {
     return habitacionActual;
+}
+
+void Jugador::setHabitacion(Habitacion* nuevaHabitacion) {
+    habitacionActual = nuevaHabitacion;
 }

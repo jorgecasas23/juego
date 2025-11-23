@@ -15,12 +15,14 @@ public:
     Entidad(std::string n, int v, int d);
     virtual ~Entidad();
 
-    virtual void Atacar() = 0;
+    virtual void Atacar(Entidad& objetivo) = 0;
     virtual void RecibirDanio(int d);
 
     bool EstaVivo() const;
     std::string getNombre() const;
-    [[nodiscard]] int getDanioBase() const;
+    int getDanioBase() const;
+    int getVida() const;
+    void setVida(int nuevaVida);
 };
 
-#endif //JDI_ENTIDAD_H
+#endif

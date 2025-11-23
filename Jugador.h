@@ -5,39 +5,37 @@
 #ifndef JDI_JUGADOR_H
 #define JDI_JUGADOR_H
 #include <string>
-#include "Objeto.h"
-#include "Entidad.h"
 #include <vector>
+#include "Entidad.h"
+#include "Objeto.h"
+
+class Habitacion;
 
 class Jugador : public Entidad{
 protected:
-    std::string nombre;
-    int vida = 500;
-    int danioBase = 75;
-    int mana = 300;
-    int experiencia = 0;
+    int mana;
+    int experiencia;
 private:
-    std::vector<Objeto> inventario;
-    std::string habitacionActual;
+    std::vector<Objeto*> inventario;
+    Habitacion* habitacionActual;
 public:
     Jugador(std::string n);
     Jugador(std::string n, int v, int d, int m);
-    ~Jugador();
+    ~Jugador() override;
 
-    void RecibirDanio(int);
-    bool EstaVivo() const;
-    int getDanioBase() const;
-    int getVida() const;
+    void Atacar(Entidad& objetivo) override;
+    void agregarObjeto(Objeto* objeto);
+    void usarObjeto(char letra, Entidad& enemigo);
 
-    void Atacar();
-    void UsarHabilidadW();
-    void UsarHabilidadE();
-    void setVida(int nuevaVida);
     int getMana() const;
     void setMana(int nuevoMana);
-    int getExperiencia();
+    void setVida(int nuevaVida);
+    int getExperiencia() const;
     void setExperiencia(int experiencia);
-    std::string getHabitacion() const;
+    Habitacion* getHabitacion() const;
+    void setHabitacion(Habitacion* nuevaHabitacion);
+
+    void mostrarInventario() const;
 };
 
-#endif //JDI_JUGADOR_H
+#endif

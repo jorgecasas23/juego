@@ -5,33 +5,19 @@
 #include "Golem.h"
 #include <iostream>
 
-Golem::Golem(){
-    
-}
+Golem::Golem()
+    : Entidad("Golem de Obsidiana", 400, 65) {}
 
 Golem::Golem(std::string n, int v, int d)
-    : nombre(n), vida(v), danioBase(d)
-{}
+    : Entidad(n, v, d) {}
 
 Golem::~Golem() {}
 
-void Golem::RecibirDanio(int d) {
-    vida = std::max(0, vida - d);
-    std::cout << nombre << " recibe " << d << " de danio. Vida: " << vida << std::endl;
+void Golem::Atacar(Entidad& objetivo) {
+    objetivo.RecibirDanio(danioBase);
+    std::cout << nombre << " lanza una roca. Danio: " << danioBase << std::endl;
 }
 
-void Golem::Atacar() {
-    std::cout << nombre << " lanza una roca. Danio: " << danioBase;
-}
-
-std::string Golem::getNombre(){
-    return nombre;
-}
-
-int Golem::getDanioBase(){
-    return danioBase;
-}
-
-int Golem::getExperiencia(){
+int Golem::getExperiencia() const {
     return experiencia;
 }

@@ -5,14 +5,16 @@
 #ifndef JDI_CLON_H
 #define JDI_CLON_H
 #include "Jugador.h"
-#include "Entidad.h"
 
 class Clon : public Jugador {
+private:
+    int danioExtra = 20;
+    int costoHabilidadE = 40;
 public:
     Clon(const std::string& nombreClonado, int v, int d, int m);
     ~Clon() override;
-    void atacar();
-    void usarHabilidadE();
+    void Atacar(Entidad& objetivo) override;
+    void usarHabilidadE(Entidad& objetivo);
 };
 
-#endif //JDI_CLON_H
+#endif

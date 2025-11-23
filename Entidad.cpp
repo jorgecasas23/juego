@@ -9,9 +9,10 @@
 Entidad::Entidad(std::string n, int v, int d) : nombre(n), vida(v), danioBase(d) {}
 
 Entidad::~Entidad() {}
+
 void Entidad::RecibirDanio(int d) {
     vida = std::max(0, vida - d);
-    std::cout << nombre << " recibe " << d << " de danio. Vida: " << vida << std::endl;
+    std::cout << nombre << " recibe " << d << " de danio. Vida restante: " << vida << std::endl;
 }
 
 bool Entidad::EstaVivo() const {
@@ -21,6 +22,15 @@ bool Entidad::EstaVivo() const {
 std::string Entidad::getNombre() const {
     return nombre;
 }
+
 int Entidad::getDanioBase() const {
     return this->danioBase;
+}
+
+int Entidad::getVida() const {
+    return vida;
+}
+
+void Entidad::setVida(int nuevaVida) {
+    vida = nuevaVida;
 }
