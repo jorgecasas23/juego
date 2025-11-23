@@ -232,11 +232,12 @@ int main() {
     std::cout << "Ingresa tu nombre: ";
     std::cin >> nombre;
 
-    Jugador jugador(nombre, 500000, 200000, 300);
+    Jugador jugador(nombre, 500, 75, 300);
 
     juego(jugador);
     
     std::cout << "\nFin del juego." << std::endl;
 
     return 0;
+
 }
