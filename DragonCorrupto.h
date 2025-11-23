@@ -19,6 +19,7 @@ public:
     void Atacar(Entidad& objetivo) override;
     int getDanioQuemadura() const;
     int getExperiencia() const;
+    Objeto* soltarLoot() const override;
 };
 
 #endif

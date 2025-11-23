@@ -5,6 +5,9 @@
 #include "OrcoSombrio.h"
 #include <iostream>
 #include <algorithm>
+#include <cstdlib>
+#include "pocionvida.h"
+#include "pocionmana.h"
 
 OrcoSombrio::OrcoSombrio()
     : Entidad("Gruk’Thar", 250, 50) {}
@@ -22,4 +25,22 @@ void OrcoSombrio::Atacar(Entidad& objetivo) {
 
 int OrcoSombrio::getExperiencia() const {
     return experiencia;
+}
+
+Objeto* OrcoSombrio::soltarLoot() const {
+    int chance = rand() % 100;
+
+    if (chance < 30) {
+        int itemType = rand() % 2;
+        
+        if (itemType == 0) {
+            std::cout << "¡El Orco Sombrio ha soltado una Pocion de Vida!" << std::endl;
+            return new PocionVida("Pocion de Vida");
+        } else {
+            std::cout << "¡El Orco Sombrio ha soltado una Pocion de Mana!" << std::endl;
+            return new PocionMana("Pocion de Mana");
+        }
+    }
+    
+    return nullptr;
 }

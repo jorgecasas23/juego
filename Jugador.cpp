@@ -3,7 +3,7 @@
 //
 
 #include "Jugador.h"
-#include "Habitacion.h"
+#include "habitacion.h"
 #include <iostream>
 #include <algorithm>
 
@@ -37,10 +37,9 @@ void Jugador::usarObjeto(char letra, Entidad& enemigo) {
         if (obj->getNombre().find("(" + letraStr + ")") != std::string::npos ||
             (obj->getNombre() == "Pocion de Vida" && letra == 'V') ||
             (obj->getNombre() == "Pocion de Mana" && letra == 'M')) {
-
+            
             obj->usarObjeto(*this, enemigo);
-
-            // Si es un objeto consumible (pocion), lo eliminamos del inventario
+            
             if (obj->getNombre().find("Pocion") != std::string::npos) {
                 delete inventario[i];
                 inventario.erase(inventario.begin() + i);
@@ -90,4 +89,16 @@ Habitacion* Jugador::getHabitacion() const {
 
 void Jugador::setHabitacion(Habitacion* nuevaHabitacion) {
     habitacionActual = nuevaHabitacion;
+    std::cout << "\n*** Entras a: " << habitacionActual->getNombre() << " ***" << std::endl;
+}
+
+void Jugador::recogerObjeto(Objeto* objeto) {
+    if (objeto != nullptr) {
+        inventario.push_back(objeto);
+        std::cout << nombre << " ha recogido: " << objeto->getNombre() << std::endl;
+    }
+}
+
+Objeto* Jugador::soltarLoot() const {
+    return nullptr;
 }

@@ -5,6 +5,7 @@
 #ifndef JDI_ENTIDAD_H
 #define JDI_ENTIDAD_H
 #include <string>
+#include "objeto.h"
 
 class Entidad {
 protected:
@@ -17,6 +18,7 @@ public:
 
     virtual void Atacar(Entidad& objetivo) = 0;
     virtual void RecibirDanio(int d);
+    virtual Objeto* soltarLoot() const = 0;
 
     bool EstaVivo() const;
     std::string getNombre() const;

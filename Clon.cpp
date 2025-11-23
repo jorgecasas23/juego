@@ -26,3 +26,7 @@ void Clon::usarHabilidadE(Entidad& objetivo) {
         std::cout << nombre << " ataca debilmente. Danio: " << danioBase << std::endl;
     }
 }
+
+Objeto* Clon::soltarLoot() const {
+    return nullptr;
+}

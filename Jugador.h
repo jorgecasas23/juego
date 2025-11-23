@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 #include "Entidad.h"
-#include "Objeto.h"
+#include "objeto.h"
 
 class Habitacion;
 
@@ -36,6 +36,8 @@ public:
     void setHabitacion(Habitacion* nuevaHabitacion);
 
     void mostrarInventario() const;
+    void recogerObjeto(Objeto* objeto);
+    Objeto* soltarLoot() const override;
 };
 
 #endif

@@ -4,9 +4,10 @@
 
 #include "Golem.h"
 #include <iostream>
+#include "espadarunica.h"
 
 Golem::Golem()
-    : Entidad("Golem de Obsidiana", 400, 65) {}
+    : Entidad("Golem", 400, 65) {}
 
 Golem::Golem(std::string n, int v, int d)
     : Entidad(n, v, d) {}
@@ -20,4 +21,9 @@ void Golem::Atacar(Entidad& objetivo) {
 
 int Golem::getExperiencia() const {
     return experiencia;
+}
+
+Objeto* Golem::soltarLoot() const {
+    std::cout << "¡El Golem ha soltado la Espada Runica!" << std::endl;
+    return new EspadaRunica("Espada Runica");
 }

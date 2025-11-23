@@ -15,6 +15,7 @@ public:
     ~Clon() override;
     void Atacar(Entidad& objetivo) override;
     void usarHabilidadE(Entidad& objetivo);
+    Objeto* soltarLoot() const override;
 };
 
 #endif

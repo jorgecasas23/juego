@@ -28,3 +28,7 @@ int DragonCorrupto::getDanioQuemadura() const {
 int DragonCorrupto::getExperiencia() const {
     return experiencia;
 }
+
+Objeto* DragonCorrupto::soltarLoot() const {
+    return nullptr;
+}
