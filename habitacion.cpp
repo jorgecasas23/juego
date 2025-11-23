@@ -1,5 +1,4 @@
 #include "habitacion.h"
-#include "Entidad.h"
 #include <iostream>
 
 Habitacion::Habitacion(std::string nombre, std::string descripcion){
@@ -7,15 +6,16 @@ Habitacion::Habitacion(std::string nombre, std::string descripcion){
     this->descripcionHabitacion = descripcion;
     izquierda = nullptr;
     derecha = nullptr;
+    anterior = nullptr;
 }
 
-Habitacion::Habitacion(std::string nombre, std::string descripcion, Habitacion* izquierda, Habitacion* derecha, int contador, const std::string& nombreJugador){
+Habitacion::Habitacion(std::string nombre, std::string descripcion, Habitacion* izquierda, Habitacion* derecha, Habitacion* anterior, int contador){
     this->nombreHabitacion = nombre;
     this->descripcionHabitacion = descripcion;
     this->izquierda = izquierda;
     this->derecha = derecha;
-
-    // Logica de poblacion de enemigos
+    this->anterior = anterior;
+    
     if (contador == 1){
         enemigos.push_back(new OrcoSombrio());
     }
@@ -39,8 +39,8 @@ Habitacion::Habitacion(std::string nombre, std::string descripcion, Habitacion* 
         enemigos.push_back(new DragonCorrupto());
         enemigos.push_back(new Golem());
     }
-    else if (contador == 7){
-        enemigos.push_back(new Clon(nombreJugador, 500, 75, 300));
+    else if (contador >= 7){
+        enemigos.push_back(new Clon(nombre, 500, 75, 300));
     }
 }
 
@@ -67,6 +67,10 @@ Habitacion* Habitacion::getDerecha() const{
     return derecha;
 }
 
+Habitacion* Habitacion::getAnterior() const{
+    return anterior;
+}
+
 std::vector<Entidad*>& Habitacion::getEnemigos(){
     return enemigos;
 }
@@ -77,4 +81,8 @@ void Habitacion::setHIzquierda(Habitacion* izquierda){
 
 void Habitacion::setHDerecha(Habitacion* derecha){
     this->derecha = derecha;
+}
+
+void Habitacion::setAnterior(Habitacion* anterior){
+    this->anterior = anterior;
 }

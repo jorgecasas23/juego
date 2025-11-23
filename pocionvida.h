@@ -1,16 +1,14 @@
 #ifndef POCIONVIDA_H
 #define POCIONVIDA_H
-#include "Jugador.h"
-#include "Objeto.h"
+#include "objeto.h"
 
+class Jugador;
+class Entidad;
 
 class PocionVida : public Objeto{
-	private:
-		int vidaRestaurada = 200;
-	public:
-		PocionVida(std::string nombre);
-		void usarObjeto() const;
-	    void usarObjeto(Jugador& objetivo);
+public:
+    PocionVida(std::string nombre);
+    void usarObjeto(Jugador& objetivo, Entidad& enemigo) const override;
 };
 
 #endif

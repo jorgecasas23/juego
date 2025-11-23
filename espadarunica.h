@@ -2,21 +2,21 @@
 #define ESPADARUNICA_H
 
 #include "objeto.h"
+#include <string>
+
+class Jugador;
+class Entidad;
 
 class EspadaRunica : public Objeto{
-	private:
-		int danio = 90;
-		int gastoMana = 0;
-		int proteccion = 10;
-		std::string letraAsignada = "Q";
-	public:
-		EspadaRunica();
-		void usarObjeto(Jugador& jugador, Entidad& enemigo) const override;
-		int getProteccion();
-		std::string getLetra();
-
-
+private:
+    const int danio = 90;
+    const int proteccion = 10;
+    const std::string letraAsignada = "Q";
+public:
+    EspadaRunica(std::string nombre);
+    void usarObjeto(Jugador& jugador, Entidad& enemigo) const override;
+    int getProteccion() const;
+    std::string getLetra() const;
 };
-
 
 #endif

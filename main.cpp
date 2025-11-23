@@ -1,3 +1,15 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+#include <algorithm>
+#include <limits>
+#include <cctype>
+
+#include "habitacion.h"
+#include "Jugador.h"
+#include "Entidad.h"
 #include "objeto.h"
 #include "pocionvida.h"
 #include "pocionmana.h"
@@ -7,186 +19,224 @@
 #include "escudoenergia.h"
 #include "corazontormenta.h"
 #include "espadarunica.h"
-#include "habitacion.h"
-#include "Jugador.h"
-#include "OrcoSombrio.h"
-#include "DragonCorrupto.h"
-#include "Clon.h"
-#include "Entidad.h"
-#include "Golem"
 
-#include <vector>
-#include <string>
-#include <iostream>
-std::vector<std::string> titulos = {"Ruinas del Nexo",
-        "Bosque Sombrio",
-        "Cueva de Cristal",
-        "Volcan de Lava",
-        "Fuerte Abandonado",
-        "Pantano Venenoso",
-        "El Nexo Final"
-    };
-std::vector<std::string> descripciones = {"Despiertas en el Nexo corrupto. Controles: A/D para moverte. Mucha suerte.",
-        "La luz no entra, es Ideal para ir en silencio.",
-        "Un paisaje hermoso pero los enemigos no tanto.",
-        "No vengas con saco, hace un poco de calor.",
-        "Esto parece viejo, cuidado al pisar",
-        "mucho barro que te vuelve mas lento.",
-        "Esto es tierra de nadie. Espera ¿eres tu?."
-    };
+std::vector<std::string> titulos = {
+    "Ruinas del Nexo",
+    "Bosque Sombrio",
+    "Cueva de Cristal",
+    "Volcan de Lava",
+    "Fuerte Abandonado",
+    "Pantano Venenoso",
+    "El Nexo Final"
+};
+
+std::vector<std::string> descripciones = {
+    "Despiertas en el Nexo corrupto. Controles: I/D para moverte. V para volver. Mucha suerte.",
+    "La luz no entra, es ideal para ir en silencio.",
+    "Un paisaje hermoso pero los enemigos no tanto.",
+    "No vengas con saco, hace un poco de calor.",
+    "Esto parece viejo, cuidado al pisar",
+    "Mucho barro que te vuelve lento.",
+    "El Nexo Final. El jefe esta aqui."
+};
 
 int desordenarHabitaciones() {
-    std::srand(std::time(0));
-    int NumerosAleatorios = std::rand() % 8;
-    return numerosAleatorios;
+    return rand() % titulos.size();
 }
 
-void combate(Jugador*& jugador, std::vector<Entidad*>& enemigos, bool& flag){
-	int opcion;
-	while (jugador->EstaVivo() && !enemigos.empty()){
-		std::cout << "Turno de " << jugador->getNombre() << ": " << std::endl;
-		std::cout << "Ingresa tu opcion: " << std::endl;
-		std::cout << "1. Atacar" << std::endl;
-		std::cout << "2. Abrir inventario" << std::endl;
-		auto& inventario = jugador->getInventario();
-		std::cin >> opcion;
-		if (opcion < 0 || opcion > 2){
-                std::cout << "Opcion no valida. Intenta de nuevo." << std::endl;
+void combate(Jugador* jugador, std::vector<Entidad*>& enemigos, bool& flag) {
+    if (enemigos.empty()) {
+        std::cout << "\nLa habitacion esta despejada." << std::endl;
+        return;
+    }
+
+    std::cout << "\n--- COMIENZA EL COMBATE ---" << std::endl;
+    while (jugador->EstaVivo() && !enemigos.empty()) {
+        std::cout << "\n--- Tu Turno: " << jugador->getNombre() << " (Vida: " << jugador->getVida() << ", Mana: " << jugador->getMana() << ") ---" << std::endl;
+        std::cout << "Enemigo actual: " << enemigos[0]->getNombre() << " (Vida: " << enemigos[0]->getVida() << ")" << std::endl;
+        std::cout << "Opciones: A) Ataque Base | I) Inventario | Q/W/E para Habilidades/Objetos | M/V para Pociones" << std::endl;
+        std::cout << "Ingresa accion: ";
+
+        char accion;
+        std::cin >> accion;
+        accion = toupper(accion);
+
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Entrada invalida. Intenta de nuevo." << std::endl;
+            continue;
+        }
+
+        Entidad& enemigoActual = *enemigos[0];
+
+        if (accion == 'A') {
+            jugador->Atacar(enemigoActual);
+        } else if (accion == 'I') {
+            jugador->mostrarInventario();
+            continue;
+        } else if (accion == 'Q' || accion == 'W' || accion == 'E' || accion == 'V' || accion == 'M') {
+            jugador->usarObjeto(accion, enemigoActual);
+        } else {
+            std::cout << "Accion no reconocida. Pierdes tu turno." << std::endl;
+        }
+
+        if (!enemigoActual.EstaVivo()) {
+            std::cout << "\n*** " << enemigoActual.getNombre() << " ha sido derrotado! ***" << std::endl;
+            
+            // LÓGICA DE FIN DE JUEGO: Si derrotas al Clon
+            if (enemigoActual.getNombre().find("Clon") != std::string::npos) {
+                std::cout << "\n==============================================" << std::endl;
+                std::cout << "!!! HAS DERROTADO AL CLON. FELICIDADES, HAS GANADO EL JUEGO !!!" << std::endl;
+                std::cout << "==============================================" << std::endl;
+                flag = false; // Establece la bandera de fin de juego
+            }
+
+            Objeto* loot = enemigos[0]->soltarLoot();
+            if (loot != nullptr) {
+                jugador->recogerObjeto(loot);
+            }
+            
+            delete enemigos[0];
+            enemigos.erase(enemigos.begin());
+            
+            // Si la bandera es falsa (victoria), terminamos la funcion combate
+            if (!flag) return; 
+
+            if (enemigos.empty()) {
+                std::cout << "La habitacion esta despejada." << std::endl;
+                break;
+            }
+        }
+        
+        if (!enemigos.empty() && jugador->EstaVivo()) {
+            std::cout << "\n--- Turno del Enemigo: " << enemigos[0]->getNombre() << " ---" << std::endl;
+            enemigos[0]->Atacar(*jugador);
+        }
+    }
+
+    if (!jugador->EstaVivo()) {
+        std::cout << "\n!!! HAS MUERTO EN COMBATE !!!" << std::endl;
+        flag = false;
+    }
+}
+
+void juego(Jugador& jugador) {
+    bool flag = true;
+    int contHabitaciones = 1;
+    std::vector<Habitacion*> habitaciones;
+
+    srand(time(0));
+
+    int numAl = desordenarHabitaciones();
+    Habitacion* habitacionInicio = new Habitacion(titulos[numAl], descripciones[numAl]);
+    jugador.setHabitacion(habitacionInicio);
+    habitaciones.push_back(habitacionInicio);
+
+    jugador.agregarObjeto(new ProyectilArcano("Proyectil Arcano"));
+    jugador.agregarObjeto(new EscudoEnergia("Escudo de Energia"));
+    jugador.agregarObjeto(new ExplosionRunica("Explosion Runica"));
+    jugador.agregarObjeto(new PocionVida("Pocion de Vida"));
+    jugador.agregarObjeto(new PocionMana("Pocion de Mana"));
+
+    if (!jugador.getHabitacion()->getEnemigos().empty()) {
+        combate(&jugador, jugador.getHabitacion()->getEnemigos(), flag);
+    }
+    
+    while (flag) {
+        Habitacion* actual = jugador.getHabitacion();
+
+        if (actual->getEnemigos().empty()) {
+            std::cout << "\n-----------------------------------------------------" << std::endl;
+            std::cout << "Te encuentras en: " << actual->getNombre() << std::endl;
+            std::cout << actual->getDescripcion() << std::endl;
+            std::cout << "Opciones de Movimiento:";
+            std::cout << " [I]zquierda";
+            std::cout << " [D]erecha";
+            if (actual->getAnterior() != nullptr) {
+                 std::cout << " [V]olver";
+            }
+            std::cout << " [O]bjetos [S]alir" << std::endl;
+            std::cout << "Ingresa direccion: ";
+
+            std::string direccion;
+            std::cin >> direccion;
+            std::transform(direccion.begin(), direccion.end(), direccion.begin(), ::toupper);
+
+            Habitacion* siguienteHabitacion = nullptr;
+
+            if (direccion == "O") {
+                jugador.mostrarInventario();
                 continue;
-			if (opcion == 1){
-				std::cout << "A quien vas a atacar: " << std::endl;
-				int i = 1, enemigoAtacar;
-				std::string letraAtaque;
-				for (auto* enemigo : enemigos){
-					std::cout <<  i << ") " << enemigo->getNombre() << std::endl;
-					i++;
-				}
-				std::cin >> enemigoAtacar;
-				enemigoAtacar -= 1;
-				if (enemigoAtacar < 0 || enemigoAtacar >= enemigos.size()){
-	                std::cout << "Objetivo no válido. Intenta de nuevo." << std::endl;
-	                continue;
-	            }
-				std::cout << "Que habilidad vas a usar: " << std::endl;
-				std::cout << "Q: " << inventario[0]->getNombre() << std::endl;
-				std::cout << "W: " << inventario[1]->getNombre() << std::endl;
-				std::cout << "E: " << inventario[2]->getNombre() << std::endl;
-				std::cin >> letraAtaque;
-				if (letraAtaque == "Q"){
-					Atacar(enemigos[enemigoAtacar]);
-				}
-				else if(letraAtaque == "W"){
-					UsarHabilidadW(enemigos[enemigoAtacar]);
-				}
-				else if(letraAtaque == "E"){
-					UsarHabilidadE(enemigos[enemigoAtacar]);
-				}
+            } else if (direccion == "S") {
+                std::cout << "Saliendo del juego." << std::endl;
+                flag = false;
+                break;
+            }
+            
+            if (direccion == "V") {
+                siguienteHabitacion = actual->getAnterior();
+                if (siguienteHabitacion == nullptr) {
+                    std::cout << "No puedes volver. Esta es la primera habitacion." << std::endl;
+                    continue;
+                }
+            } else if (direccion == "I") {
+                if (actual->getIzquierda() != nullptr) {
+                    siguienteHabitacion = actual->getIzquierda();
+                } else {
+                    contHabitaciones++;
+                    numAl = desordenarHabitaciones();
+                    siguienteHabitacion = new Habitacion(titulos[numAl], descripciones[numAl], nullptr, actual, actual, contHabitaciones);
+                    actual->setHIzquierda(siguienteHabitacion);
+                    habitaciones.push_back(siguienteHabitacion);
+                }
+            } else if (direccion == "D") {
+                if (actual->getDerecha() != nullptr) {
+                    siguienteHabitacion = actual->getDerecha();
+                } else {
+                    contHabitaciones++;
+                    numAl = desordenarHabitaciones();
+                    siguienteHabitacion = new Habitacion(titulos[numAl], descripciones[numAl], actual, nullptr, actual, contHabitaciones);
+                    actual->setHDerecha(siguienteHabitacion);
+                    habitaciones.push_back(siguienteHabitacion);
+                }
+            }
 
-				if (!enemigos[enemigoAtacar]->EstaVivo()){
-					std::cout << "Has derrotado a " << enemigos[enemigoAtacar]->getNombre() << std::endl;
-					int experienciaRecibida = jugador->experiencia + enemgios[enemigoAtacar]->getExperiencia();
-					jugador->setExperiencia(experienciarecibida);
-					delete enemigos[enemigoAtacar];
-					enemigos.erase(enemigos.begin() + enemigoAtacar);
-				}
-				else{
-					std::cout << "Turno de los enemigos: " << std::endl;
-					for (auto* enemigo : enemigos){
-						if (jugador->EstaVivo()){
-							enemigo->atacar(*jugador);
-							std::cout << enemigo->getNombre() << "ataca al "<< jugador->getNombre() <<". " << jugador->getNombre() << " tiene " << jugador->getSalud() << "puntos de vida" << std::endl;
-							if (enemigo->getEspecie = "Dragon Corrupto"){
-								int danioQuemadura = jugador->getVida() - enemigo->getDanioQuemadura();
-								jugador->setVida(danioQuemadura);
-							}
-							if (!jugador->EstaVivo()) {
-	    						std::cout << jugador->getNombre() <<" ha muerto. El combate termina." << std::endl;
-	    						flag = true;
-	    						break;
-	    					}
-						}
-					}
-				}
-			}
-			else if (opcion == 2){
-				int seleccionObjeto;
-				std::cout << "Inventario de" << jugador->getNombre() << ": "  << std::endl;
-				auto& inventario = jugador->getInventario();
-				for (int i = 0; i < inventario.size(); i++){
-					std::cout << i + 1 << ") " << inventario[i]->getNombre() << std::endl; 
-				}
-				std::cout << "Selecciona el objeto que vas a usar: " << std::endl;
-				std::cin >> seleccionObjeto;
-				std::cout << inventario[seleccionObjeto]->getDescripcion() << std::endl;
-				if (seleccionObjeto > 3){
-					int usoObjeto;
-					std::cout << "Deseas usar este objeto?" << std::endl;
-					std::cout << "1) Si" << std::endl;
-					std::cout << "2) No" << std::endl;
-					std::cin >> usoObjeto;
-					if (usoObjeto == 1){
-						inventario[seleccionObjeto]->usarObjeto()
-					}
-				}
-			}
-		}
-		else{
-			std::cout << "Opcion invalida. Intenta de nuevo" << std::endl;
-		}
-	}
+            if (siguienteHabitacion != nullptr) {
+                jugador.setHabitacion(siguienteHabitacion);
+                if (!jugador.getHabitacion()->getEnemigos().empty()) {
+                    std::cout << "\n¡CUIDADO! Un enemigo te espera." << std::endl;
+                    combate(&jugador, jugador.getHabitacion()->getEnemigos(), flag);
+                } else {
+                    std::cout << "La habitacion esta despejada." << std::endl;
+                }
+            } else {
+                std::cout << "Opcion de movimiento no valida." << std::endl;
+            }
+        }
+        else {
+            combate(&jugador, jugador.getHabitacion()->getEnemigos(), flag);
+            if (!flag) break; 
+        }
+    }
+    
+    for (auto* habitacion : habitaciones) {
+        delete habitacion;
+    }
+    habitaciones.clear();
 }
 
-void gameplay(Jugador*& jugador){
-	std::vector<Habitacion*> habitaciones;
-	habitaciones.push_back(new Habitacion(titulos[0], descripciones[0]))
-	std::string direccion;
-	jugador.setHabitacion(habitaciones[0]);
-	std::cout << habitaciones[0].getDescripcion() << std::endl;
-	std::cin >> direccion;
-	int contHabitaciones = 0;
-	bool flag = false;
-	while(contHabitaciones < 7 && flag == false){
-		if (direccion == "A" && jugador.getHabitacion().getIzquierda() == NULL){
-			int numAl = desordenarHabitaciones();
-			Habitacion* nuevaHabitacion = new Habitacion(titulos[numAl], descripciones[numAl], NULL, jugador.getHabitacion(), contHabitaciones);
-			jugador.getHabitacion().setHIzquierda(nuevaHabitacion);
-			habitaciones.push_back(nuevaHabitacion);
-			jugador.setHabitacion(nuevaHabitacion); 
-			contHabitaciones++;
-		}
-		else if (direccion == "D" && jugador.getHabitacion().getDerecha() == NULL){
-			int numAl = desordenarHabitaciones();
-			Habitacion* nuevaHabitacion = new Habitacion(titulos[numAl], descripciones[numAl], jugador.getHabitacion(), NULL, contHabitaciones);         
-			jugador.getHabitacion().setHDerecha(nuevaHabitacion);
-			habitaciones.push_back(nuevaHabitacion);
-			jugador.setHabitacion(nuevaHabitacion);                                   
-			contHabitaciones++;
-		}
-		std::cout << jugador.getHabitacion().getNombre() << std::endl;
-		std::cout << jugador.getHabitacion().getDescripcion() << std::endl;
+int main() {
+    std::string nombre;
+    std::cout << "Bienvenido a Ecos del Nexo" << std::endl;
+    std::cout << "Ingresa tu nombre: ";
+    std::cin >> nombre;
 
-		for (auto* enemigo : jugador.getHabitacion().getEnemigos()){	
-			std::cout << "Te has encontrado con " << enemigo->getNombre() << ". Un " << enemigo->getEspecie() << std::endl;
-		}
-		combate(&jugador, jugador.getHabitacion().getEnemigos(), flag);
-	}
-	for (auto* habitacion : habitaciones){
-		delete habitacion;
-	}
-	habitaciones.clear();
-}
+    Jugador jugador(nombre, 500000, 200000, 300);
 
+    juego(jugador);
+    
+    std::cout << "\nFin del juego." << std::endl;
 
-
-int main(){
-	std::string nombre;
-	std::cout << "Bienvenido a Ecos del Nexo" << std::endl;
-	std::cout << "Te encuentras en una dimension fragmentada, donde diferentes monstruos han sido corrompidos" << std::endl;
-	std::cout << "Y tu mision es subir de nivel y eliminarlos con tus habilidades" << std::endl;
-	std::cout << "Escribe tu nombre de heroe: " << std::endl;
-	std::cin >> nombre;
-	Jugador* mc = new Jugador(nombre);
-	gameplay(mc)
-	delete Jugador;
-	return 0;
+    return 0;
 }

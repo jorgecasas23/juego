@@ -1,15 +1,14 @@
 #ifndef POCIONMANA_H
 #define POCIONMANA_H
-#include "Objeto.h"
+#include "objeto.h"
 
 class Jugador;
+class Entidad;
 
 class PocionMana : public Objeto{
-private:
-	int manaRestaurado = 150;
 public:
-	PocionMana(std::string nombre);
-	void usarObjeto(Jugador& Objetivo) const;
+    PocionMana(std::string nombre);
+    void usarObjeto(Jugador& Objetivo, Entidad& Enemigo) const override;
 };
 
 #endif

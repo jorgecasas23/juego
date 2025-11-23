@@ -1,24 +1,21 @@
 //
 // Created by lonix on 21/11/2025.
 //
-#include "PocionVida.h"
+#include "pocionvida.h"
 #include "Jugador.h"
+#include "Entidad.h"
 #include <iostream>
 
 PocionVida::PocionVida(std::string nombre)
-    : Objeto(nombre, 0)
-{
-}
+    : Objeto(nombre, "Restaura una cantidad de vida.") {}
 
-void usarObjeto(Jugador& objetivo) {
-    int VidaRestaurada = 200;
+void PocionVida::usarObjeto(Jugador& Objetivo, Entidad& Enemigo) const {
+    const int VidaRestaurada = 200;
 
-    int vidaActual = jugador.getVida();
+    int vidaActual = Objetivo.getVida();
     int nuevaVida = vidaActual + VidaRestaurada;
 
-    jugador.setVida(nuevaVida);
+    Objetivo.setVida(nuevaVida);
 
-    std::cout << jugador << " recupera " << VidaRestaurada << " de vida al usar la pocion de vida" << std::endl;
-
-    Inventario.EliminarObjeto(getNombre());
+    std::cout << Objetivo.getNombre() << " recupera " << VidaRestaurada << " de vida al usar la pocion de vida. Vida actual: " << nuevaVida << std::endl;
 }

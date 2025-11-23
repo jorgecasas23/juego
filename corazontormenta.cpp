@@ -4,13 +4,15 @@
 
 #include "corazontormenta.h"
 #include "Jugador.h"
+#include "Entidad.h"
 #include <iostream>
 #include <string>
-#include "Entidad.h"
 
 CorazonTormenta::CorazonTormenta(std::string nombre)
-    : Object(nombre, 0)
-{
+    : Objeto(nombre + " (E)", "Gran daño de area y restauracion de vida si es necesario.") {}
+
+std::string CorazonTormenta::getLetra() const {
+    return letraAsociada;
 }
 
 void CorazonTormenta::usarObjeto(Jugador& Objetivo, Entidad& Enemigo) const {
@@ -23,17 +25,13 @@ void CorazonTormenta::usarObjeto(Jugador& Objetivo, Entidad& Enemigo) const {
         int nuevoMana = manaActual - costoMana;
         Objetivo.setMana(nuevoMana);
 
-        Enemigo.recibirDanio(daniohacer);
+        Enemigo.RecibirDanio(daniohacer);
 
-        std::cout << "" << Objetivo << " usa Corazon de la tormenta (" << letraAsociada << ") " << std::endl;
-        std::cout << "Hace " << daniohacer << " puntos de daño al enemigo" << Enemigo.getNombre() << std::endl;
-        std::cout << "mana restante: " << nuevoMana << std::endl;
+        std::cout << Objetivo.getNombre() << " usa Corazon de la tormenta (" << letraAsociada << ")" << std::endl;
+        std::cout << "Hace " << daniohacer << " puntos de daño al enemigo " << Enemigo.getNombre() << std::endl;
+        std::cout << "Mana restante: " << nuevoMana << std::endl;
     } else {
-        std::cout << Objetivo << " no tiene suficiente mana (" << manaActual
+        std::cout << Objetivo.getNombre() << " no tiene suficiente mana (" << manaActual
                   << ") para usar " << getNombre() << " (Costo: " << costoMana << ")." << std::endl;
     }
-}
-
-std::string CorazonTormenta::getLetra() const {
-    return letraAsociada;
 }

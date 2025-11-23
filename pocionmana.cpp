@@ -4,22 +4,19 @@
 
 #include "pocionmana.h"
 #include "Jugador.h"
+#include "Entidad.h"
 #include <iostream>
 
 PocionMana::PocionMana(std::string nombre)
-    : Objeto(nombre, 0)
-{
-}
+    : Objeto(nombre, "Restaura una cantidad de mana.") {}
 
-void PocionMana::usarObjeto(Jugador& Objetivo) const {
-    int manaRestaurado = 150;
+void PocionMana::usarObjeto(Jugador& Objetivo, Entidad& Enemigo) const {
+    const int manaRestaurado = 150;
 
-    int manaActual = jugador.getMana();
+    int manaActual = Objetivo.getMana();
     int nuevoMana = manaActual + manaRestaurado;
 
-    jugador.setMana(nuevoMana);
+    Objetivo.setMana(nuevoMana);
 
-    std::cout << jugador.getNombre() << " recupera " << manaRestaurado << " de maná. Maná actual: " << nuevoMana << std::endl;
-
-    Inventario.EliminarObjeto(getNombre());
+    std::cout << Objetivo.getNombre() << " recupera " << manaRestaurado << " de mana. Mana actual: " << nuevoMana << std::endl;
 }

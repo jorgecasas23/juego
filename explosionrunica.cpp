@@ -1,14 +1,16 @@
 //
 // Created by lonix on 21/11/2025.
 //
-#include "ExplosionRunica.h"
+#include "explosionrunica.h"
 #include "Jugador.h"
 #include "Entidad.h"
 #include <iostream>
 
 ExplosionRunica::ExplosionRunica(std::string nombre)
-    : Objeto(nombre, 0)
-{
+    : Objeto(nombre + " (E)", "Gran daño de area a un solo objetivo.") {}
+
+std::string ExplosionRunica::getLetra() const {
+    return letraAsociada;
 }
 
 void ExplosionRunica::usarObjeto(Jugador& Objetivo, Entidad& Enemigo) const {
@@ -20,20 +22,14 @@ void ExplosionRunica::usarObjeto(Jugador& Objetivo, Entidad& Enemigo) const {
     if (manaActual >= costoMana) {
         int nuevoMana = manaActual - costoMana;
         Objetivo.setMana(nuevoMana);
-        Enemigo.recibirDanio(daniohacer);
+        Enemigo.RecibirDanio(danioHabilidad);
 
-        
-        std::cout << "** " << Objetivo() << " lanza Explosion Runica ("
+        std::cout << "** " << Objetivo.getNombre() << " lanza Explosion Runica ("
                   << letraAsociada << ")" << std::endl;
-        std::cout << "Danio hecho: " << daniohacer << "al enemigo"<< Enemigo.getNombre() << std::endl;
+        std::cout << "Danio hecho: " << danioHabilidad << " al enemigo " << Enemigo.getNombre() << std::endl;
         std::cout << "Mana restante: " << nuevoMana << std::endl;
     } else {
-        std::cout << Objetivo() << " no tiene suficiente mana (" << manaActual
+        std::cout << Objetivo.getNombre() << " no tiene suficiente mana (" << manaActual
                   << ") para lanzar " << getNombre() << " (Costo: " << costoMana << ")." << std::endl;
     }
-}
-
-std::string ExplosionRunica::getLetra() const {
-    return letraAsociada;
-
 }

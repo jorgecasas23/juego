@@ -1,12 +1,17 @@
-#include "proyectil.h"
+#include "proyectilarcano.h"
+#include "Jugador.h"
+#include "Entidad.h"
+#include <iostream>
 
+ProyectilArcano::ProyectilArcano(std::string nombre)
+    : Objeto(nombre + " (Q)", "Ataque magico de bajo coste y daño moderado.") {}
 
-ProyectilArcano::ProyectilArcano(){
-
+std::string ProyectilArcano::getLetra() const {
+    return letraAsociada;
 }
 
-void ProyectilArcano::usarObjeto(Jugador& jugador, Entidad& enemigo) const{
-	const int costoMana = gastoMana;
+void ProyectilArcano::usarObjeto(Jugador& Objetivo, Entidad& Enemigo) const {
+    const int costoMana = gastoMana;
     const int daniohacer = danio;
 
     int manaActual = Objetivo.getMana();
@@ -15,22 +20,17 @@ void ProyectilArcano::usarObjeto(Jugador& jugador, Entidad& enemigo) const{
         int nuevoMana = manaActual - costoMana;
         Objetivo.setMana(nuevoMana);
 
-        Enemigo.recibirDanio(daniohacer);
+        Enemigo.RecibirDanio(daniohacer);
 
-        std::cout << "" << Objetivo << " usa Proyectil arcano (" << letraAsociada << ") " << std::endl;
-        std::cout << "Hace " << daniohacer << " puntos de daño al enemigo" << Enemigo.getNombre() << std::endl;
-        std::cout << "mana restante: " << nuevoMana << std::endl;
+        std::cout << Objetivo.getNombre() << " usa Proyectil Arcano (" << letraAsociada << ")" << std::endl;
+        std::cout << "Hace " << daniohacer << " puntos de daño al enemigo " << Enemigo.getNombre() << std::endl;
+        std::cout << "Mana restante: " << nuevoMana << std::endl;
     } else {
-        std::cout << Objetivo << " no tiene suficiente mana (" << manaActual
+        std::cout << Objetivo.getNombre() << " no tiene suficiente mana (" << manaActual
                   << ") para usar " << getNombre() << " (Costo: " << costoMana << ")." << std::endl;
     }
 }
 
-
-int ProyectilArcano::getProteccion(){
-	return proteccion;
-}
-
-std::string ProyectilArcano::getLetra(){
-	return letraAsociada;
+int ProyectilArcano::getProteccion() const {
+    return proteccion;
 }

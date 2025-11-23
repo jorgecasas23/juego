@@ -2,16 +2,19 @@
 // Created by lonix on 21/11/2025.
 //
 
-#include "EscudoFragmentado.h"
+#include "escudofragmentado.h"
 #include "Jugador.h"
+#include "Entidad.h"
 #include <iostream>
 
 EscudoFragmentado::EscudoFragmentado(std::string nombre)
-    : Objeto(nombre, 0)
-{
+    : Objeto(nombre + " (W)", "Otorga una barrera de proteccion menor.") {}
+
+std::string EscudoFragmentado::getLetra() const {
+    return letraAsociada;
 }
 
-void EscudoFragmentado::usarObjeto(Jugador& Objetivo) const {
+void EscudoFragmentado::usarObjeto(Jugador& Objetivo, Entidad& Enemigo) const {
     const int costoMana = gastoMana;
     const int valorProteccion = proteccion;
 
@@ -21,16 +24,11 @@ void EscudoFragmentado::usarObjeto(Jugador& Objetivo) const {
         int nuevoMana = manaActual - costoMana;
         Objetivo.setMana(nuevoMana);
 
-        std::cout << "" << Objetivo << " activa " << getNombre() << " (Habilidad "
-                  << letraAsociada << ")" << std::endl;
-        std::cout << "Gana una barrera de " << valorProteccion << " puntos de protección temporal." << std::endl;
-        std::cout << "Maná restante: " << nuevoMana << std::endl;
+        std::cout << Objetivo.getNombre() << " activa Escudo Fragmentado (Habilidad " << letraAsociada << ")" << std::endl;
+        std::cout << "Gana una barrera de " << valorProteccion << " puntos de proteccion temporal." << std::endl;
+        std::cout << "Mana restante: " << nuevoMana << std::endl;
     } else {
-        std::cout << Objetivo << " no tiene suficiente maná (" << manaActual
+        std::cout << Objetivo.getNombre() << " no tiene suficiente mana (" << manaActual
                   << ") para activar " << getNombre() << " (Costo: " << costoMana << ")." << std::endl;
     }
-}
-
-std::string EscudoFragmentado::getLetra() const {
-    return letraAsociada;
 }
